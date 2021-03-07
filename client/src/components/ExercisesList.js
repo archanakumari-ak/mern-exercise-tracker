@@ -19,7 +19,7 @@ const Exercise = (props) => (
           props.deleteExercise(props.exercise._id);
         }}
       >
-        <i class='fa fa-trash' style={{ color: "red" }}></i> Delete
+        <i className='fa fa-trash' style={{ color: "red" }}></i> Delete
       </a>
     </td>
   </tr>
