@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
+const path = require("path");
+
 require("dotenv").config();
 
 const app = express();
@@ -21,18 +23,18 @@ mongoose.connection.once("open", () =>
   console.log("mongodb connected successfully")
 );
 
-/* mongoose.connect(
-  "mongodb+srv://archanak:archanak@cluster0.uxfxf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false, // added
-  }
-); */
-
 app.use("/exercises", require("./routes/exercises"));
 app.use("/users", require("./routes/users"));
+
+// Serve static assets if in production
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 app.use("/", (req, res) => {
   res.send("app is running");
